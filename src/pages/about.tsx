@@ -6,8 +6,8 @@ import { SliceZone } from "@prismicio/react";
 import { createClient } from "../prismicio";
 import { components } from "../slices";
 
-export async function getStaticProps() {
-  const client = createClient();
+export async function getStaticProps({ previewData }: any) {
+  const client = createClient(previewData);
   try {
     const page = await client.getSingle("about");
 
