@@ -12,7 +12,7 @@ import LogoutButton from "./LogoutButton";
 
 export default function Header() {
   const [settings, setSettings] = useState<any>(null);
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchSettings = async () => {
