@@ -13,7 +13,7 @@ export async function getStaticProps({ previewData }: any) {
 
     return {
       props: { page },
-      revalidate: 60, // Optional: ISR support
+      // revalidate: 60, // Optional: ISR support // Incremental Static Regeneration (ISR) is not supported when using output: 'export'
     };
   } catch (error) {
     console.error("Error fetching 'about' page:", error);
