@@ -4,6 +4,7 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
+import MainLayout from "@/layouts/MainLayout";
 
 export async function getStaticProps({ previewData }: any) {
   const client = createClient(previewData);
@@ -35,3 +36,7 @@ export default function AboutPage({ page }: any) {
     </>
   );
 }
+
+AboutPage.getLayout = function getLayout(page: any) {
+  return <MainLayout>{page}</MainLayout>;
+};

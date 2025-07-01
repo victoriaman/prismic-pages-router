@@ -3,6 +3,7 @@ import { asImageSrc, isFilled } from "@prismicio/client";
 import { SliceZone } from "@prismicio/react";
 import { createClient } from "../prismicio";
 import { components } from "../slices";
+import MainLayout from "@/layouts/MainLayout";
 
 export async function getStaticProps({ params, previewData }: any) {
     const client = createClient(previewData);
@@ -71,3 +72,7 @@ export default function DynamicPage({ page }: any) {
         </>
     );
 }
+
+DynamicPage.getLayout = function getLayout(page: any) {
+    return <MainLayout>{page}</MainLayout>;
+  };
