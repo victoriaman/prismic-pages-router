@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { asImageSrc } from "@prismicio/client";
 import { SliceZone } from "@prismicio/react";
-
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
