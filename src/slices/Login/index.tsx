@@ -49,7 +49,7 @@ const Login: FC<LoginProps> = ({ slice }) => {
 
       if (isValid) {
         document.cookie = `${CONSTANT.AUTHENTICATION_COOKIE_NAME}=true; path=/;`;
-        router.push("/"); // Redirect after login
+        router.push("/about"); // Redirect after login
       } else {
         setError("Username or password is incorrect");
       }
