@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/prismicio";
-import { PrismicNextLink } from "@prismicio/next";
+// import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
 import { usePathname } from 'next/navigation'
 
@@ -11,22 +11,22 @@ import Logo from "./Logo";
 import LogoutButton from "./LogoutButton";
 
 export default function Header() {
-  const [settings, setSettings] = useState<any>(null);
-  const pathname = usePathname();
+  // const [settings, setSettings] = useState<any>(null);
+  // const pathname = usePathname();
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const client = createClient();
-      const result = await client.getSingle("settings");
-      setSettings(result);
-    };
+  // useEffect(() => {
+  //   const fetchSettings = async () => {
+  //     const client = createClient();
+  //     const result = await client.getSingle("settings");
+  //     setSettings(result);
+  //   };
 
-    fetchSettings();
-  }, []);
+  //   fetchSettings();
+  // }, []);
 
-  if (!settings) {
-    return null; // or a loading spinner
-  }
+  // if (!settings) {
+  //   return null; // or a loading spinner
+  // }
 
   return (
     <Bounded as="header" className="py-4 md:py-6 lg:py-8">
@@ -34,7 +34,7 @@ export default function Header() {
         <Link href="/">
           <Logo />
         </Link>
-        <nav>
+        {/* <nav>
           <ul className="flex">
             {settings.data.navigation.map(({ label, link }: any) => (
               <li key={label}>
@@ -45,7 +45,7 @@ export default function Header() {
             ))}
             <LogoutButton className="text-red-300 hover:text-red-700 cursor-pointer ml-2" />
           </ul>
-        </nav>
+        </nav> */}
       </div>
     </Bounded>
   );
