@@ -1,5 +1,3 @@
-'use client';
-
 import { createClient } from "@/prismicio";
 import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";

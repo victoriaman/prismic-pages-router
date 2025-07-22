@@ -1,14 +1,8 @@
-'use client';
-
-import { useEffect, useState } from "react";
-import { createClient } from "@/prismicio";
 // import { PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
-import { usePathname } from 'next/navigation'
 
 import Bounded from "@/components/Bounded";
 import Logo from "./Logo";
-import LogoutButton from "./LogoutButton";
 
 export default function Header() {
   // const [settings, setSettings] = useState<any>(null);

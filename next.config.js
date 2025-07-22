@@ -25,7 +25,13 @@ const nextConfig = {
           },
         })
       );
-      // config.resolve.alias['react-server-dom-webpack/client.edge'] = false;
+
+      // ⛔ chặn resolve tới react-server-dom-webpack
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        'react-server-dom-webpack/client': false,
+        'react-server-dom-webpack/client.edge': false,
+      };
       return config;
     },
 };
