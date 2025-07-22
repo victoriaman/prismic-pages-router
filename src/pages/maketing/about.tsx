@@ -1,9 +1,27 @@
-import Head from "next/head";
-import { asImageSrc } from "@prismicio/client";
-import { SliceZone } from "@prismicio/react";
+import { Content, asImageSrc } from "@prismicio/client";
 import { createClient } from "@/prismicio";
-import { components } from "@/slices";
-import MainLayout from "@/layouts/MainLayout";
+import dynamic from "next/dynamic";
+
+const MetaHead = dynamic(() => import("@/components/MetaHead"), {
+  ssr: false,
+});
+
+// ✅ Dynamic import RenderSlices để tránh SSR lỗi useContext
+const RenderSlices = dynamic(() => import("@/components/RenderSlices"), {
+  ssr: false,
+});
+
+const MainLayout = dynamic(() => import("@/layouts/MainLayout"), {
+  ssr: false
+});
+
+type Slice =
+  | Content.CallToActionSlice
+  | Content.FeaturesSlice
+  | Content.HeroSlice
+  | Content.LoginSlice
+  | Content.TestimonialsSlice
+  | Content.TextWithImageSlice;
 
 export async function getStaticProps({ previewData }: any) {
   const client = createClient(previewData);
@@ -22,16 +40,27 @@ export async function getStaticProps({ previewData }: any) {
   }
 }
 
-export default function AboutPage({ page }: any) {
+export default function AboutPage({ page }: {
+  page: {
+    data: {
+      slices: Slice[];
+      meta_title?: string;
+      meta_description?: string;
+      meta_image?: any;
+    };
+  };
+}) {
   return (
     <>
-      <Head>
-        <title>{page?.data?.meta_title || "Fallback Title"}</title>
-        <meta name="description" content={page?.data?.meta_description || ""} />
-        <meta property="og:image" content={asImageSrc(page?.data?.meta_image) || ""} />
-      </Head>
+      <MetaHead
+        title={page?.data?.meta_title || "Login"}
+        description={page?.data?.meta_description || ""}
+        ogImage={asImageSrc(page?.data?.meta_image) || ""}
+      />
 
-      <SliceZone slices={page.data.slices} components={components} />
+      {/* ✅ Render slices tại client-side để tránh lỗi hook */}
+      <RenderSlices slices={page.data.slices} />
+      {/* <SliceZone slices={page.data.slices} components={components} /> */}
     </>
   );
 }
