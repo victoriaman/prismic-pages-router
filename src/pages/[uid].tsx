@@ -1,9 +1,20 @@
-import Head from "next/head";
-import { asImageSrc, isFilled } from "@prismicio/client";
+import { Content, asImageSrc, isFilled } from "@prismicio/client";
 import { SliceZone } from "@prismicio/react";
 import { createClient } from "../prismicio";
 import { components } from "../slices";
 import dynamic from "next/dynamic";
+
+type Slice =
+  | Content.CallToActionSlice
+  | Content.FeaturesSlice
+  | Content.HeroSlice
+  | Content.LoginSlice
+  | Content.TestimonialsSlice
+  | Content.TextWithImageSlice;
+
+const MetaHead = dynamic(() => import("@/components/MetaHead"), {
+    ssr: false,
+});
 
 const MainLayout = dynamic(() => import("@/layouts/MainLayout"), {
     ssr: false
@@ -62,15 +73,24 @@ export async function getStaticPaths() {
     };
 }
 
-export default function DynamicPage({ page }: any) {
+export default function DynamicPage({ page }: {
+    page: {
+      data: {
+        slices: Slice[];
+        meta_title?: string;
+        meta_description?: string;
+        meta_image?: any;
+      };
+    };
+  }) {
     return (
         <>
-            <p className="invisible">{page.uid}</p>
-            <Head>
-                <title>{page?.data?.meta_title || "Fallback Title"}</title>
-                <meta name="description" content={page?.data?.meta_description || ""} />
-                <meta property="og:image" content={asImageSrc(page?.data?.meta_image) || ""} />
-            </Head>
+            {/* <p className="invisible">{page.uid}</p> */}
+            <MetaHead
+                title={page?.data?.meta_title || "Features"}
+                description={page?.data?.meta_description || ""}
+                ogImage={asImageSrc(page?.data?.meta_image) || ""}
+            />
 
             <SliceZone slices={page.data.slices} components={components} />
         </>
