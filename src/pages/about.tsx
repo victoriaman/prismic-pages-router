@@ -26,11 +26,11 @@ export async function getStaticProps({ previewData }: any) {
 export default function AboutPage({ page }: any) {
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>{page?.data?.meta_title || "Fallback Title"}</title>
         <meta name="description" content={page?.data?.meta_description || ""} />
         <meta property="og:image" content={asImageSrc(page?.data?.meta_image) || ""} />
-      </Head>
+      </Head> */}
 
       <SliceZone slices={page.data.slices} components={components} />
     </>

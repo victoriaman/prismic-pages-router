@@ -1,16 +1,14 @@
-'use client';
-
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Content } from "@prismicio/client";
 import { JSXMapSerializer, PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import Heading from "@/components/Heading";
 import Bounded from "@/components/Bounded";
 import Button from "@/components/Button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { CONSTANT } from "@/lib/constant";
 import { apiPost } from "@/lib/api";
 import { LoginRequest } from "@/model/LoginRequest";
-import { CONSTANT } from "@/lib/constant";
 
 const components: JSXMapSerializer = {
   heading2: ({ children }) => (
@@ -20,8 +18,8 @@ const components: JSXMapSerializer = {
   ),
   paragraph: ({ children }) => (
     <p className="text-center text-slate-600 mb-8">{children}</p>
-  )
-}
+  ),
+};
 
 /**
  * Props for `Login`.
@@ -33,15 +31,22 @@ export type LoginProps = SliceComponentProps<Content.LoginSlice>;
  */
 const Login: FC<LoginProps> = ({ slice }) => {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isClient, setIsClient] = useState(false); // ✅ Track client-side render
+
+  useEffect(() => {
+    setIsClient(true); // ✅ Prevent SSR from running client-only logic
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
+      // TODO: Replace with actual API call
       const isValid = await apiPost<LoginRequest>("/auth/login", {
         email,
         password,
@@ -49,7 +54,7 @@ const Login: FC<LoginProps> = ({ slice }) => {
 
       if (isValid) {
         document.cookie = `${CONSTANT.AUTHENTICATION_COOKIE_NAME}=true; path=/;`;
-        router.push("/about"); // Redirect after login
+        router.push("/about"); // ✅ Redirect after login
       } else {
         setError("Username or password is incorrect");
       }
@@ -58,29 +63,20 @@ const Login: FC<LoginProps> = ({ slice }) => {
     }
   };
 
-  /* set to true for verifing error handling */
-  if (false) {
-    throw new Error("Dashboard failed to render");
-  }
+  if (!isClient) return null; // ✅ Avoid SSR error
 
   return (
     <Bounded
       data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}>
-
+      data-slice-variation={slice.variation}
+    >
       <form onSubmit={handleSubmit}>
         <div className="grid gap-8 md:grid-cols-2 max-w-4xl m-auto shadow-xl md:px-12 px-4 py-12 place-items-center 
         rounded-lg bg-gradient-to-tr from-cyan-50 via-white to-emerald-50">
-
-          <PrismicNextImage
-            field={slice.primary.image}
-            className="rounded-lg"
-          />
+          <PrismicNextImage field={slice.primary.image} className="rounded-lg" />
 
           <div className="grid gap-4">
-            <PrismicRichText field={slice.primary.heading}
-              components={components}
-            />
+            <PrismicRichText field={slice.primary.heading} components={components} />
 
             <Button field={slice.primary.logingooglebutton}>
               {slice.primary.logingooglebuttontext}
@@ -90,9 +86,7 @@ const Login: FC<LoginProps> = ({ slice }) => {
               {slice.primary.logintwitterbuttontext}
             </Button>
 
-            <PrismicRichText field={slice.primary.separator}
-              components={components}
-            />
+            <PrismicRichText field={slice.primary.separator} components={components} />
 
             <label htmlFor="email" className="text-slate-600">
               {slice.primary.usernamelabel}
@@ -104,7 +98,8 @@ const Login: FC<LoginProps> = ({ slice }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded" />
+              className="w-full px-4 py-2 border border-slate-300 rounded"
+            />
 
             <label htmlFor="password" className="text-slate-600">
               {slice.primary.passwordlabel}
@@ -116,7 +111,8 @@ const Login: FC<LoginProps> = ({ slice }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded" />
+              className="w-full px-4 py-2 border border-slate-300 rounded"
+            />
 
             {error && <p className="text-red-600 text-sm">{error}</p>}
 
