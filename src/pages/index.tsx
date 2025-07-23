@@ -1,9 +1,11 @@
 import { Agbalumo, Acme } from "next/font/google";
 import dynamic from 'next/dynamic';
+import type { RemoteHeaderProps } from "adminMFE/Header";
 
-const RemoteHeader = dynamic(() => import('adminMFE/Header'), {
+const RemoteHeader = dynamic(() => import("adminMFE/Header"), {
   ssr: false,
-});
+}) as React.FC<RemoteHeaderProps>;
+
 
 const agbalumo = Agbalumo({
   variable: "--font-agbalumo",
@@ -24,7 +26,7 @@ export default function Home() {
     >
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
        
-        <RemoteHeader />
+        <RemoteHeader initialCounter={5}/>
        
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
