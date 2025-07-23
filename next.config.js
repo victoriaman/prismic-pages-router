@@ -9,12 +9,13 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   webpack(config, options) {
+      const isProd = process.env.NODE_ENV === 'production';
       config.plugins.push(
         new NextFederationPlugin({
           name: 'hostApp',
           filename: 'static/runtime/remoteEntry.js', // ✅ REQUIRED even in host
           remotes: {
-            adminMFE: 'adminMFE@http://localhost:3001/_next/static/runtime/remoteEntry.js',
+            adminMFE: isProd ? 'adminMFE@https://victoriaman.github.io/admin-pages-router/_next/static/runtime/remoteEntry.js' : 'adminMFE@http://localhost:3001/_next/static/runtime/remoteEntry.js'
           },
           shared: {
             react: { singleton: true, requiredVersion: false },
