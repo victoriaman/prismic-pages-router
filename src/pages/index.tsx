@@ -26,7 +26,7 @@ export default function Home() {
     >
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
        
-        <RemoteHeader initialCounter={5}/>
+        <RemoteHeader initializeCounter={5}/>
        
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
