@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
     console.log("os info:", os);
 
     const isAuthenticated = request.cookies.get(CONSTANT.AUTHENTICATION_COOKIE_NAME)?.value === "true";
-    if (["/", "/features", "/marketing/about", "/about"].includes(pathname) && !isAuthenticated) {
+    if (["/features", "/marketing/about", "/about"].includes(pathname) && !isAuthenticated) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
